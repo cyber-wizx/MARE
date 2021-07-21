@@ -12,7 +12,7 @@ IDA Free -> https://hex-rays.com/ida-free/
 
 2. In PeStudio, we observed an Internet IP address, **_WS2_32.dll_** library together with **_WSAConnect_** and **_WSASocket_** function which could signify that the connection to the IP address. A reverse shell dll was also seen.
 
-![image](https://user-images.githubusercontent.com/87561308/126121507-25db12a4-91db-4015-81f4-aa04d05ac436.png)
+![image](https://user-images.githubusercontent.com/87561308/126421640-bbdda5e4-f767-449b-808e-f1e295b7bd31.png)
 
 ## Debugging
 
@@ -31,13 +31,13 @@ IDA Free -> https://hex-rays.com/ida-free/
 
 4. Observed the block of assembly, and you will find (1) static IP being declared earlier.
 
-![image](https://user-images.githubusercontent.com/87561308/126118047-43ce7e9d-a930-42fe-af8b-33cf0ecf9c5a.png)
+![image](https://user-images.githubusercontent.com/87561308/126421974-5359621f-a904-4c87-941f-183265dd3edb.png)
 
 5. **_htons_** is a function in **_WS2_32.dll_** library that takes in a 16-bit number in host byte order and returns a 16-bit number in network byte order used in TCP/IP networks. The value of 3995h yields the value "14741" in decimals.
 
-![image](https://user-images.githubusercontent.com/87561308/126116840-c9e17c09-e24f-41d2-b493-0aead2e148f7.png)
+![image](https://user-images.githubusercontent.com/87561308/126422414-ae4d6b25-e1cf-492c-bae2-51d99cbe6dbe.png)
 
-6. From the above, we are quite confident that there is a logic in the dll performing a reverse shell to 3[.]17[.]202[.]129:14741.
+6. From the above, we are quite confident that there is a logic in the dll performing a reverse shell to the IP over port 14741.
 
 # Reference
 https://labs.bishopfox.com/tech-blog/cve-2019-18935-remote-code-execution-in-telerik-ui
