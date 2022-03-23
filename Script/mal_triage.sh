@@ -46,7 +46,8 @@ find . -maxdepth 5 -type f | \
 #				floss --no-static-strings "$file"; \
 #				echo "Interesting floss result ends here..."; \
 				echo "Searching for top interesting strings..."; \
-				strings "$file" | rank_strings -s -l 10; \ #adjust this parameter as you deem
+				### Note: adjust the rank_strings parameter as you deem
+				strings "$file" | rank_strings -s -l 10; \
 				echo "Interesting strings result ends here..."; \
 				echo "\n\n";; \
 			
