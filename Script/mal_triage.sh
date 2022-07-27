@@ -18,7 +18,7 @@ find . -maxdepth 5 -type f | \
 				echo "$x" + ".msg message"; \
 				## can be parsed event nicer
 				cat "$file" | grep "http"; \
-				echo "\n\n";; \
+				echo "";; \
 			
 			### PE32 (.NET) section
 			*PE32*\.Net*) \
@@ -29,7 +29,7 @@ find . -maxdepth 5 -type f | \
 				echo "yara result ends here..."; \
 				echo "Check if there is a huge base64 payload"; \
 				ilspycmd "$file" | base64dump.py -n 200; \
-				echo "\n\n";; \
+				echo "";; \
 			
 			### PE32 (others) section
 			*PE32*) \
@@ -49,12 +49,12 @@ find . -maxdepth 5 -type f | \
 				### Note: adjust the rank_strings parameter as you deem
 				strings "$file" | rank_strings -s -l 10; \
 				echo "Interesting strings result ends here..."; \
-				echo "\n\n";; \
+				echo "";; \
 			
 			### Outlook message
 			*Microsoft*Outlook*Message) \ 
 				echo "$x" + "Microsoft Outlook message found"; \
-				echo "\n\n";; \
+				echo "";; \
 			
 			## Microsoft Documents
 			*Microsoft*) \
@@ -74,7 +74,10 @@ find . -maxdepth 5 -type f | \
 						pcode2code "$file"; \
 						echo "pcode2code result ends here..."; \
 				esac; \
-				echo "\n\n";; \
+				echo "checking for Follina URL now..."; \
+				zipdump.py "$file" -s "word/_rels/document.xml.rels" -d | xmldump.py pretty | grep External; \
+				echo "Follina check completed"
+				echo "";; \
 			
 			### RTF
 			*Rich*Text*Format*) \
@@ -82,7 +85,10 @@ find . -maxdepth 5 -type f | \
 				echo "Running rtfdump.py now..."; \
 				rtfdump.py "$file"; \
 				echo "rtfdump result ends here..."; \
-				echo "\n\n";; \
+				echo "checking for Follina URL now..."; \
+				rtfdump.py "$file" | grep http; \
+				echo "Follina check completed"
+				echo "";; \
 			
 			### PDF section
 			*PDF*document*) \
@@ -93,11 +99,11 @@ find . -maxdepth 5 -type f | \
 				echo "Running pdf-parser (listing all URLs) now.."; \
 				pdf-parser.py "$file" -O -k /URI; \
 				echo "pdf-parser URL list result ends here..."; \
-				echo "\n\n";; \
+				echo "";; \
 			
 			### scripts [to be improved]
 			*ASCII*text*) \
 				echo "$x" + "clear text file found"; \
-				echo "\n\n";; \
+				echo "";; \
 		esac \
 	done
